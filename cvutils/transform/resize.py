@@ -30,8 +30,8 @@ class Resize(Transformer):
         assert scale is None or size is None, \
             'Ambiguous, scale is not None and size is not None.'
 
-        height = inp.shape[0]
-        width = inp.shape[1]
+        height = inp.shape[1]
+        width = inp.shape[2]
 
         if scale is not None and not isinstance(scale, (tuple, list)):
             scale = (scale, scale)

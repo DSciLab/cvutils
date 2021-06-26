@@ -21,7 +21,10 @@ setup(name='cvutils',
             'numpy',
             'imageio',
             'libtiff',
-            'opencv-python'
+            'opencv-python',
+            'matplotlib'
       ],
-      packages=['cvutils'],
+      packages=['cvutils',
+                'cvutils.transform'
+      ],
      )

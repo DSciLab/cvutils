@@ -21,7 +21,7 @@ dep: $(REQUIREMENTS)
 
 
 install: dep
-	$(PYTHON) setup.py install
+	$(PIP) install .
 
 
 clean:
