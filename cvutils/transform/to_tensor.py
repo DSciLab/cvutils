@@ -10,5 +10,5 @@ class ToTensor(Transformer):
         if isinstance(inp, Tensor):
             return inp
         else:
-            inp = torch.from_numpy(inp)
+            inp = torch.from_numpy(inp).type(torch.float32)
         return inp

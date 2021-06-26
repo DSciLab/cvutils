@@ -21,9 +21,13 @@ class Normalize(Transformer):
         if (mean is not None or std is not None) and not \
             (mean is not None and std is not None):
             raise ValueError(f'Argument error. mean={mean}, std={std}')
-            
-        self.mean = np.array(mean)
-        self.std = np.array(std)
+
+        if mean is not None and std is not None:
+            self.mean = np.array(mean)
+            self.std = np.array(std)
+        else:
+            self.mean = None
+            self.std = None
 
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         C = inp.shape[0]
