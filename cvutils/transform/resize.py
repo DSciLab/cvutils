@@ -6,8 +6,12 @@ from .base import Transformer
 
 
 class Resize(Transformer):
-    def __init__(self) -> None:
-        pass
+    def __init__(
+        self,
+        size: Optional[Union[int, Tuple[int, int], List[int]]]=None
+    ) -> None:
+        if isinstance(size, int):
+            self.size = [size, size]
 
     def transform_matric(self, scale: List[float]) -> np.ndarray:
         assert len(scale) == 2, f'len(sclae) = {len(scale)} != 2'
@@ -25,10 +29,13 @@ class Resize(Transformer):
         scale: Optional[float]=None,
         size: Union[Tuple[int, int], List[int], int]=None
     ) -> np.ndarray:
-        assert scale is not None or size is not None, \
-            'Scale is None and size is None.'
         assert scale is None or size is None, \
             'Ambiguous, scale is not None and size is not None.'
+        if size is None and scale is None:
+            size = self.size
+
+        assert scale is not None or size is not None, \
+            'Scale is None and size is None.'
 
         height = inp.shape[1]
         width = inp.shape[2]
