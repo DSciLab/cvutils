@@ -22,7 +22,8 @@ setup(name='cvutils',
             'imageio',
             'libtiff',
             'opencv-python',
-            'matplotlib'
+            'matplotlib',
+            'scipy'
       ],
       packages=['cvutils',
                 'cvutils.transform'

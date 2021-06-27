@@ -22,11 +22,8 @@ class FlipY(Transformer):
 class RandomFlip(Transformer):
     def __init__(self) -> None:
         super().__init__()
-        self.flip_fn = [FlipX(), FlipY(), None]
+        self.flip_fn = [FlipX(), FlipY()]
 
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         flip_fn = random.choice(self.flip_fn)
-        if flip_fn is None:
-            return inp
-        else:
-            return flip_fn(inp)
+        return flip_fn(inp)

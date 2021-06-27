@@ -1,6 +1,7 @@
 from typing import Optional, List, Tuple, Union
 import random
 import numpy as np
+from numpy.core.fromnumeric import amin
 from scipy.ndimage import affine_transform
 from .base import Transformer
 
@@ -12,6 +13,8 @@ class Resize(Transformer):
     ) -> None:
         if isinstance(size, int):
             self.size = [size, size]
+        else:
+            self.size = size
 
     def transform_matric(self, scale: List[float]) -> np.ndarray:
         assert len(scale) == 2, f'len(sclae) = {len(scale)} != 2'
@@ -23,48 +26,60 @@ class Resize(Transformer):
 
         return resize_axis_matrix
 
-    def __call__(
+    def resize_by(
         self,
         inp: np.ndarray,
-        scale: Optional[float]=None,
-        size: Union[Tuple[int, int], List[int], int]=None
+        size: Optional[Union[int, Tuple[int, int], List[int]]]=None
     ) -> np.ndarray:
-        assert scale is None or size is None, \
-            'Ambiguous, scale is not None and size is not None.'
-        if size is None and scale is None:
-            size = self.size
-
-        assert scale is not None or size is not None, \
-            'Scale is None and size is None.'
+        if isinstance(size, int):
+            size = [size, size]
+        else:
+            size = size
 
         height = inp.shape[1]
         width = inp.shape[2]
 
-        if scale is not None and not isinstance(scale, (tuple, list)):
-            scale = (scale, scale)
-
-        if size is not None and not isinstance(size, (tuple, list)):
-            size = (size, size)
-
-        if scale is None:
-            scale = (size[0] / height,
-                     size[1] / width)
-
-        if size is None:
-            size = (int(height * scale[0]),
-                    int(width * scale[1]))
+        scale = (size[0] / height,
+                 size[1] / width)
 
         affine_matrix = self.transform_matric(scale)
-        if inp.ndim == 2:
-            # gray image
-            inp = affine_transform(
-                inp, affine_matrix, output_shape=size)
-        else:
-            # RGB image
-            inp_ = []
-            for i in range(inp.shape[0]):
-                inp_.append(affine_transform(
-                    inp[i], affine_matrix, output_shape=size))
-            inp = np.stack(inp_, axis=0)
+        inp_ = []
+        for i in range(inp.shape[0]):
+
+            c_inp_min = inp[i].min()
+            c_inp_max = inp[i].max()
+            c_inp = affine_transform(
+                inp[i], affine_matrix, output_shape=size)
+            c_inp = np.clip(c_inp, a_min=c_inp_min, a_max=c_inp_max)
+            inp_.append(c_inp)
+
+        inp = np.stack(inp_, axis=0)
+        return inp
+
+    def __call__(
+        self,
+        inp: np.ndarray,
+    ) -> np.ndarray:
+        if self.size in None:
+            raise ValueError(f'target size is None.')
+
+        height = inp.shape[1]
+        width = inp.shape[2]
+
+        scale = (self.size[0] / height,
+                 self.size[1] / width)
+
+        affine_matrix = self.transform_matric(scale)
+        inp_ = []
+        for i in range(inp.shape[0]):
+
+            c_inp_min = inp[i].min()
+            c_inp_max = inp[i].max()
+            c_inp = affine_transform(
+                inp[i], affine_matrix, output_shape=self.size)
+            c_inp = np.clip(c_inp, a_min=c_inp_min, a_max=c_inp_max)
+            inp_.append(c_inp)
+
+        inp = np.stack(inp_, axis=0)
 
         return inp

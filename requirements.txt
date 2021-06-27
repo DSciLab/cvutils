@@ -4,3 +4,4 @@ imageio
 libtiff
 opencv-python
 matplotlib
+scipy

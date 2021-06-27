@@ -4,6 +4,17 @@ from .base import Transformer
 
 
 class LinearNormalize(Transformer):
+    ESP = 1.0e-3
+
+    @staticmethod
+    def is_normalized(inp: np.ndarray) -> bool:
+        inp_max = inp.max()
+        inp_min = inp.min()
+        if (inp_min - 0.0) < LinearNormalize.ESP and (inp_max - 1.0) < LinearNormalize.ESP:
+            return True
+        else:
+            return False
+
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         inp_max = inp.max()
         inp_min = inp.min()
@@ -12,6 +23,8 @@ class LinearNormalize(Transformer):
 
 
 class Normalize(Transformer):
+    ESP = 1.0e-3
+
     def __init__(
         self,
         mean: Optional[Union[List[int], int]]=None,
@@ -28,6 +41,15 @@ class Normalize(Transformer):
         else:
             self.mean = None
             self.std = None
+
+    @staticmethod
+    def is_normalized(inp: np.ndarray) -> bool:
+        inp_mean = inp.mean()
+        inp_std = inp.std()
+        if (inp_mean - 0.0) < Normalize.ESP and (inp_std - 1.0) < Normalize.ESP:
+            return True
+        else:
+            return False
 
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         C = inp.shape[0]

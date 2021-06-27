@@ -1,13 +1,19 @@
 
-from typing import Union
+from typing import List, Optional, Tuple, Union
 import numpy as np
 from scipy.ndimage import affine_transform
+from scipy.ndimage.interpolation import rotate
 from .base import Transformer
 
 
-class Rotate(Transformer):
-    def __init__(self) -> None:
+class RandomRotate(Transformer):
+    def __init__(
+        self,
+        rotate_range: Optional[Union[List[float],
+                                     Tuple[float, float]]]=[0.0, np.pi / 4]
+    ) -> None:
         super().__init__()
+        self.rotate_range = rotate_range
 
     def transform_matric(
         self,
@@ -32,8 +38,9 @@ class Rotate(Transformer):
 
         return move_axis_matrix @ rotate_matrix @ move_axis_matrix_back
 
-    def __call__(self, inp: np.ndarray, theta: float) -> np.ndarray:
-        assert inp.ndim == 3, f'input dim error inp.ndim={inp.ndim}'
+    def __call__(self, inp: np.ndarray) -> np.ndarray:
+        theta = np.random.uniform() * (self.rotate_range[1] - self.rotate_range[0])\
+                + self.rotate_range[0]
 
         height = inp.shape[1]
         width = inp.shape[2]
@@ -45,22 +52,3 @@ class Rotate(Transformer):
         inp = np.stack(inp_, axis=0)
 
         return inp
-
-
-class RandomRotate(Transformer):
-    def __init__(
-        self,
-        r_min: Union[int, float],
-        r_max: Union[int, float]
-    ) -> None:
-        super().__init__()
-        assert r_max > r_min, \
-            f'r_max <= r_min, r_max={r_max} and r_min={r_min}'
-
-        self.r_max = r_max
-        self.r_min = r_min
-        self.rotater = Rotate()
-
-    def __call__(self, inp: np.ndarray) -> np.ndarray:
-        theta = np.random.rand() * (self.r_max - self.r_min) + self.r_min
-        return self.rotater(inp, theta)

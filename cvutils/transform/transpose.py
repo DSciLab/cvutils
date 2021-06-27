@@ -3,10 +3,10 @@ from .base import Transformer
 
 
 class TransposeTorch(Transformer):
-    def __init__(self) -> None:
-        pass
-
-    def __call__(self, inp: np.ndarray) -> np.ndarray:
+    def __call__(
+        self,
+        inp: np.ndarray
+    ) -> np.ndarray:
         if inp.ndim == 2:
             # for gray image
             return inp
@@ -22,10 +22,10 @@ class TransposeTorch(Transformer):
 
 
 class UntransposeTorch(Transformer):
-    def __init__(self) -> None:
-        pass
-
-    def __call__(self, inp: np.ndarray) -> np.ndarray:
+    def __call__(
+        self,
+        inp: np.ndarray
+    ) -> np.ndarray:
         if inp.ndim == 2:
             # for gray image
             return inp

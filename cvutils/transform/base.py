@@ -6,4 +6,4 @@ class Transformer(object):
         pass
 
     def __call__(self, inp: np.ndarray) -> np.ndarray:
-        pass
+        raise NotImplementedError
