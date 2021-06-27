@@ -60,7 +60,7 @@ class Resize(Transformer):
         self,
         inp: np.ndarray,
     ) -> np.ndarray:
-        if self.size in None:
+        if self.size is None:
             raise ValueError(f'target size is None.')
 
         height = inp.shape[1]
