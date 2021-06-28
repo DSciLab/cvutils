@@ -38,8 +38,7 @@ class RandomTransform(Transformer):
     """
     def __init__(
         self,
-        k: int,
-        input_size: Union[List[int], Tuple[int, int], int]
+        k: int
     ) -> None:
         super().__init__()
         self.k = k
@@ -54,7 +53,6 @@ class RandomTransform(Transformer):
         ]
         self.spatial_ops = [
             RandomFlip(),
-            ResizeRandomCenterCrop(input_size, input_size)
         ]
         assert self.k <= len(self.color_ops),\
             f'k should be less than {len(self.color_ops)}, k={self.k}.'
