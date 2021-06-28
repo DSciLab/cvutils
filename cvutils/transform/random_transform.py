@@ -54,9 +54,7 @@ class RandomTransform(Transformer):
         ]
         self.spatial_ops = [
             RandomFlip(),
-            RandomRotate([-np.pi / 4, np.pi / 4]),
-            OrOpration([ZeroPaddingRandomCenterCrop(input_size, input_size),
-                        ResizeRandomCenterCrop(input_size, input_size)])
+            ResizeRandomCenterCrop(input_size, input_size)
         ]
         assert self.k <= len(self.color_ops),\
             f'k should be less than {len(self.color_ops)}, k={self.k}.'
