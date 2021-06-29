@@ -52,7 +52,7 @@ class RandomTransform(Transformer):
             RandomSharpening()
         ]
         self.spatial_ops = [
-            RandomFlip(),
+            RandomFlip()
         ]
         assert self.k <= len(self.color_ops),\
             f'k should be less than {len(self.color_ops)}, k={self.k}.'
