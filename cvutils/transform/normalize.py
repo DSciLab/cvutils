@@ -23,7 +23,7 @@ class LinearNormalize(Transformer):
 
 
 class Normalize(Transformer):
-    ESP = 1.0e-3
+    ESP = 1.0e-5
 
     def __init__(
         self,
@@ -63,5 +63,5 @@ class Normalize(Transformer):
         mean = mean.reshape(C, 1, 1)
         std = std.reshape(C, 1, 1)
 
-        inp = (inp - mean) / std
+        inp = (inp - mean) / (std + self.ESP)
         return inp
