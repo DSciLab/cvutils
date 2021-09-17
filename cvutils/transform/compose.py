@@ -22,6 +22,9 @@ class Compose(Transformer):
                 inp = transformer(inp)
             except Exception as e:
                 print(f'[DEBUG] Transformer '
-                      f'{transformer.__class__.__name__} error.')
+                      f'{transformer.__class__.__name__} error. '
+                      f'inp shape: {inp.shape}, '
+                      f'inp.max={inp.max()}, '
+                      f'inp.min={inp.min()}')
                 raise e
         return inp
