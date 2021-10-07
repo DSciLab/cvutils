@@ -20,3 +20,4 @@ from .resize_crop import ResizeRandomCenterCrop, ResizeRandomCrop
 from .sharp import RandomSharpening
 from .de_normalize import DeLinearNormalize, DeNormalize
 from .random_transform import RandomTransform
+from .resize_crop_pad import ResizeRandomCenterCroPad, ResizeRandomCroPad

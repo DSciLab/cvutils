@@ -31,6 +31,35 @@ def random_crop(
                rand_w_start: rand_w_start + size[1]]
 
 
+def center_crop(
+    inp: np.ndarray,
+    size: Union[List[int], Tuple[int, int], int]
+) -> np.ndarray:
+    """
+    :param inp: shape (C, H, W)
+    """
+    if isinstance(size, int):
+        size = [size, size]
+
+    inp_shape = inp.shape
+    H = inp_shape[1]
+    W = inp_shape[2]
+
+    assert size[0] <= H,\
+        f'size on input is {inp_shape}, crop size is {size}.'
+    assert size[1] <= W,\
+        f'size on input is {inp_shape}, crop size is {size}.'
+
+    if size[0] == H and size[1] == W:
+        return inp
+
+    half_shift_h = (H - size[0]) // 2
+    half_shift_w = (W - size[1]) // 2
+
+    return inp[:, half_shift_h: half_shift_h + size[0],
+               half_shift_w: half_shift_w + size[1]]
+
+
 def random_center_crop(
     inp: np.ndarray,
     size: Union[List[int], Tuple[int, int], int]

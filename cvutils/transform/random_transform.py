@@ -60,7 +60,10 @@ class RandomTransform(Transformer):
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         # check inp normalize
         if not Normalize.is_normalized(inp):
-            print(f'[WARNING] input data is not normalized.')
+            print(
+                f'[WARNING] input data is not normalized, '
+                f'mean={inp.mean()}, std={inp.std()}'
+            )
 
         selected_color_ops = random.sample(self.color_ops, k=self.k)
 
