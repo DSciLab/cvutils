@@ -38,10 +38,12 @@ class RandomTransform(Transformer):
     """
     def __init__(
         self,
-        k: int
+        k: int,
+        check=True
     ) -> None:
         super().__init__()
         self.k = k
+        self.check = check
         self.color_ops = [
             RandomBrightness(),
             RandomContrast(),
@@ -59,7 +61,7 @@ class RandomTransform(Transformer):
 
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         # check inp normalize
-        if not Normalize.is_normalized(inp):
+        if self.check and (not Normalize.is_normalized(inp)):
             print(
                 f'[WARNING] input data is not normalized, '
                 f'mean={inp.mean()}, std={inp.std()}'
