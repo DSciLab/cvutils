@@ -7,7 +7,7 @@ from .base import Transformer
 def augment_gamma(
     inp: np.ndarray,
     *,
-    gamma_range: Optional[Tuple[float, float]]=(0.5, 2.0),
+    gamma_range: Optional[Tuple[float, float]]=(0.8, 1.2),
     invert_image: Optional[bool]=False,
     epsilon: Optional[bool]=1e-7,
     retain_stats: Optional[bool]=False

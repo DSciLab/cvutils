@@ -12,7 +12,7 @@ class RandomSharpening(Transformer):
 
     def __init__(
         self,
-        strength: Optional[Union[float, Tuple[float, float]]]=[0.1, 1.0],
+        strength: Optional[Union[float, Tuple[float, float]]]=[0.1, 0.6],
     ) -> None:
         self.strength = strength
 

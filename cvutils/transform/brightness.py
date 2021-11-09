@@ -18,7 +18,7 @@ class RandomBrightnessAdditive(_BrightnessBase):
     def __init__(
         self,
         mu: float=0.0,
-        sigma: float=0.2
+        sigma: float=0.1
     ) -> None:
         super().__init__()
         self.mu = mu
@@ -37,7 +37,7 @@ class RandomBrightnessAdditive(_BrightnessBase):
 class RandomBrightnessMultiplicative(_BrightnessBase):
     def __init__(
         self,
-        multiplier_range: Optional[Tuple[float, float]]=(0.5, 2)
+        multiplier_range: Optional[Tuple[float, float]]=(0.7, 1.5)
     ) -> None:
         super().__init__()
         self.multiplier_range = multiplier_range

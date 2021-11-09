@@ -6,7 +6,7 @@ from .base import Transformer
 
 def contrast(
     inp: np.ndarray,
-    contrast_range: Optional[Union[Tuple[float, float], List[float]]]=(0.75, 1.25),
+    contrast_range: Optional[Union[Tuple[float, float], List[float]]]=(0.8, 1.2),
 ) -> np.ndarray:
 
     if np.random.random() < 0.5 and contrast_range[0] < 1:
