@@ -21,3 +21,4 @@ from .sharp import RandomSharpening
 from .de_normalize import DeLinearNormalize, DeNormalize
 from .random_transform import RandomTransform
 from .resize_crop_pad import ResizeRandomCenterCroPad, ResizeRandomCroPad
+from .crop_resize import RandomCropResize, RandomCenterCropResize

@@ -106,7 +106,17 @@ class RandomCrop(Transformer):
             self.size = [size, size]
         else:
             self.size = size
-    
+
+    def crop_by_ratio(
+        self,
+        inp: np.ndarray,
+        ratio: float
+    ) -> np.ndarray:
+        _, H, W = inp.shape
+        crop_size_H = int(H * ratio)
+        crop_size_W = int(W * ratio)
+        return random_crop(inp, [crop_size_H, crop_size_W])
+
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         return random_crop(inp, self.size)
 
@@ -121,6 +131,16 @@ class RandomCenterCrop(Transformer):
             self.size = [size, size]
         else:
             self.size = size
-    
+
+    def crop_by_ratio(
+        self,
+        inp: np.ndarray,
+        ratio: float
+    ) -> np.ndarray:
+        _, H, W = inp.shape
+        crop_size_H = int(H * ratio)
+        crop_size_W = int(W * ratio)
+        return random_center_crop(inp, [crop_size_H, crop_size_W])
+
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         return random_center_crop(inp, self.size)
