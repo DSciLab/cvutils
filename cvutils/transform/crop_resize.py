@@ -1,4 +1,5 @@
 from typing import List, Tuple, Union
+import copy
 import numpy as np
 from .base import Transformer
 from .crop import RandomCenterCrop, RandomCrop
@@ -17,8 +18,10 @@ class _CropResize(Transformer):
                 crop_range[0] > 0 and\
                     crop_range[0] < crop_range[1]
 
-        self.crop_range = crop_range
+        self._crop_range = copy.deepcopy(crop_range)
+        self.crop_range = copy.deepcopy(crop_range)
         self.resize = Resize(final_size)
+        self.apply_strength()
 
     def get_rand_crop_ratio(self) -> float:
         return np.random.uniform(*self.crop_range)
@@ -39,6 +42,12 @@ class _CropResize(Transformer):
         output[:, padding_start_h: padding_start_h + H,
                padding_start_w: padding_start_w + W] = inp
         return output
+
+    def apply_strength(self) -> None:
+        crop_range_0 = 1.0 -  (1.0 - self._crop_range[0]) * self.strength
+        crop_range_1 = 1.0 -  (1.0 - self._crop_range[1]) * self.strength
+        self.crop_range[0] = min(crop_range_0, 1.0)
+        self.crop_range[1] = min(crop_range_1, 1.0)
 
     def __call__(self, inp: np.ndarray) -> np.ndarray:
         crop_ratio = self.get_rand_crop_ratio()
