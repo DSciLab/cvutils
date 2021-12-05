@@ -21,10 +21,24 @@ class Compose(Transformer):
             try:
                 inp = transformer(inp)
             except Exception as e:
-                print(f'[DEBUG] Transformer '
-                      f'{transformer.__class__.__name__} error. '
-                      f'inp shape: {inp.shape}, '
-                      f'inp.max={inp.max()}, '
-                      f'inp.min={inp.min()}')
+                print(
+                    f'[DEBUG] Transformer '
+                    f'{transformer.__class__.__name__} error. '
+                    f'inp shape: {inp.shape}, '
+                    f'inp.max={inp.max()}, '
+                    f'inp.min={inp.min()}'
+                )
                 raise e
         return inp
+
+    def apply_strength(self) -> None:
+        for transformer in self.transformer_list:
+            try:
+                transformer.call_apply_strength(self.strength)
+            except Exception as e:
+                print(
+                    f'[DEBUG] Transformer '
+                    f'({transformer.__class__.__name__}) apply strength. '
+                    f'strength: {self.strength}'
+                )
+                raise e
